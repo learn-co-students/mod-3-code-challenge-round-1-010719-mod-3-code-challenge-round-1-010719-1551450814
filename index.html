@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -12,7 +12,6 @@
       crossorigin="anonymous"
     />
 
-    <script type="text/javascript" src="src/index.js"></script>
     <style>
       input {
         font-size: 2rem;
@@ -27,7 +26,7 @@
           <form id="comment-form">
             <label for="add-comment-input"> <h4>Create a New Comment</h4> </label>
             <input class="form-control" type="text" id="add-comment-input" />
-            <button class="btn btn-success buttons" type="submit" name="comment-button">Create comment</button>
+            <button id="new-comment-button" data-action="new-comment" class="btn btn-success buttons" type="submit" name="comment-button">Create comment</button>
           </form>
 
           <hr />
@@ -43,5 +42,6 @@
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="src/index.js"></script>
   </body>
 </html>
