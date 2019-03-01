@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 commentList = document.querySelector('#comment-list')
 commentForm = document.querySelector('#comment-form')
+editCommentForm = document.querySelector('#edit-comment-form')
 commentFilter = document.querySelector('#filter-comments-input')
 let allComments = []
 
@@ -62,7 +63,6 @@ function deleteComment(commentId){
   })
 }
 
-
 function filterComments(e) {
   let input = e.target.value
   let filteredComments = allComments.filter(comment=>{
@@ -85,22 +85,22 @@ commentList.addEventListener("click", e=>{
 })
 
 function editComment(comment) {
-  commentForm.innerHTML = `
+  editCommentForm.innerHTML = `
   <input type="hidden" id="comment-id" value="${comment.id}" />
-  <label for="add-comment-input"> <h4>Create a New Comment</h4> </label>
-  <input class="form-control" type="text" id="add-comment-input" value = "${comment.content}" />
-  <button id="editsubmit" class="btn btn-success buttons" type="submit" name="comment-button">Create comment</button>
-  `
+  <label for="add-comment-input"> <h4>Edit comment</h4> </label>
+  <input class="form-control" type="text" id="new-comment-id" value ="${comment.content}"/>
+  <button id="please" class="submit-edit" type="submit" name="comment-button">Edit comment</button>`
 
-commentForm.addEventListener("submit", e=>{
-  if (e.target.id == "editsubmit"){
+editCommentForm.addEventListener("click", e=>{
+  if (e.target.id == "please"){
   handleEditComment(e)}
 
 })}
 
 function handleEditComment(e){
-  // debugger
-    let content = e.content.value
+   // debugger
+   e.preventDefault()
+    let content = document.querySelector('#new-comment-id').value
     let id = document.querySelector('#comment-id').value
 
     fetch(`http://localhost:3000/comments/${id}`, {
@@ -115,6 +115,7 @@ function handleEditComment(e){
   })
   .then(r => r.json())
   .then(fetchComments)
+  .then(editCommentForm.reset())
 }
 
 commentFilter.addEventListener("input", filterComments)
