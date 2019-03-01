@@ -30,8 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (e.target.id === "edit-button"){
       let editThisComment = allComments.find(comment => comment.id == e.target.dataset.id)
       editForm.addEventListener("submit",(e)=>{
-        // e.preventDefault()
-        fetchPatchEditComment(commentsURL + "/" + editThisComment.id)
+        e.preventDefault()
+        fetchPatchEditComment(commentsURL + "/" + editThisComment.id, allComments)
+
+        // renderAllComments(allComments)
+        // commentList.innerHTML = ''
+        // renderAllComments(allComments)
+        editCommentValue.value = ''
+
       })
 
     }
@@ -72,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     })
   }
 
-  function fetchPatchEditComment(url){
+  function fetchPatchEditComment(url,comments){
     fetch(url,{
       method: "PATCH",
       headers: {
@@ -83,6 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
         content: editCommentValue.value
       })
     })
+    .then(res => res.json())
+    .then(parsedJSON => {
+      commentList.innerHTML = ''
+      renderAllComments(comments.splice(0,comments.length -1))
+      renderSingleComment(parsedJSON)
+    })
+
   }
 
   function renderSingleComment(comment){
