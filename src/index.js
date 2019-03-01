@@ -52,7 +52,6 @@ function filterComments() {
       li[i].style.display = "none";
     }
   }
-
 }
 
 function populateForm(input) {
