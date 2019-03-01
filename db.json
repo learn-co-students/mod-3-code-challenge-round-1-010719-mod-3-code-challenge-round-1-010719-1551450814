@@ -2,7 +2,7 @@
   "comments": [
     {
       "id": 1,
-      "content": "Good luck"
+      "content": "bad luck"
     },
     {
       "content": "now to implement the delete..",
@@ -25,16 +25,24 @@
       "id": 11
     },
     {
-      "content": "weeee",
-      "id": 12
+      "content": "oo luck",
+      "id": 22
     },
     {
-      "content": "does this work?",
-      "id": 13
+      "content": "is this working?",
+      "id": 24
     },
     {
-      "content": "i believe...it does",
-      "id": 14
+      "content": "maybe",
+      "id": 25
+    },
+    {
+      "content": "this is an edit?",
+      "id": 26
+    },
+    {
+      "content": "it wasnt",
+      "id": 27
     }
   ]
 }

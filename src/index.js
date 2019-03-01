@@ -16,6 +16,7 @@ function renderComments(comments){
   comments.forEach(c=>{
     if (!(allComments.includes(c)))
     allComments.push(c)})
+    return allComments
 }
 
 function renderSingleComment(comment){
@@ -23,16 +24,9 @@ function renderSingleComment(comment){
   <li class="list-group-item" data-id=${comment.id}>
   <span>${comment.content} </span>
   <button id="deleteButton" class="btn btn-danger btn-sm pull-right">Delete</button>
+  <button id="editButton" class="btn btn-success btn-sm pull-right">Edit</button>
   </li>
   `}
-
-commentForm.addEventListener("submit", e=>{
-  e.preventDefault()
-  let newComment = document.querySelector('#add-comment-input').value
-  postCommentToDB(newComment)
-  renderCommentToDom(newComment)
-  commentForm.reset();
-})
 
 function postCommentToDB(newComment){
   fetch('http://localhost:3000/comments', {
@@ -50,23 +44,17 @@ function postCommentToDB(newComment){
 // debugger
 }
 
-function renderCommentToDom(c){
+function renderCommentToDom(comment){
   commentList.innerHTML += `
-  <li class="list-group-item" data-id=${c.id}>
-  <span>${c} </span>
+  <li class="list-group-item" data-id=${comment.id}>
+  <span>${comment}</span>
   <button id="deleteButton" class="btn btn-danger btn-sm pull-right">Delete</button>
+  <button id="editButton" class="btn btn-success btn-sm pull-right">Edit</button>
+
   </li>
   `
 }
 
-commentList.addEventListener("click", e=>{
-  if (e.target.id === "deleteButton"){
-  let commentId = e.target.parentElement.dataset.id
-  deleteComment(commentId)
-  e.target.parentElement.remove()
-  console.log(commentId)
-}
-})
 
 function deleteComment(commentId){
   fetch(`http://localhost:3000/comments/${commentId}`, {
@@ -74,7 +62,6 @@ function deleteComment(commentId){
   })
 }
 
-commentFilter.addEventListener("input", filterComments)
 
 function filterComments(e) {
   let input = e.target.value
@@ -84,11 +71,67 @@ function filterComments(e) {
   renderComments(filteredComments)
 }
 
+commentList.addEventListener("click", e=>{
+  if (e.target.id === "deleteButton"){
+  let commentId = e.target.parentElement.dataset.id
+  deleteComment(commentId)
+  e.target.parentElement.remove()
+  console.log(commentId)
+} if (e.target.id === "editButton") {
+  let commentId = e.target.parentElement.dataset.id
+  let comment = allComments.find(comment => comment.id == e.target.parentElement.dataset.id )
+  editComment(comment)
+}
+})
+
+function editComment(comment) {
+  commentForm.innerHTML = `
+  <input type="hidden" id="comment-id" value="${comment.id}" />
+  <label for="add-comment-input"> <h4>Create a New Comment</h4> </label>
+  <input class="form-control" type="text" id="add-comment-input" value = "${comment.content}" />
+  <button id="editsubmit" class="btn btn-success buttons" type="submit" name="comment-button">Create comment</button>
+  `
+
+commentForm.addEventListener("submit", e=>{
+  if (e.target.id == "editsubmit"){
+  handleEditComment(e)}
+
+})}
+
+function handleEditComment(e){
+  // debugger
+    let content = e.content.value
+    let id = document.querySelector('#comment-id').value
+
+    fetch(`http://localhost:3000/comments/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+  },
+    body: JSON.stringify({
+      content: content
+    })
+  })
+  .then(r => r.json())
+  .then(fetchComments)
+}
+
+commentFilter.addEventListener("input", filterComments)
+
+commentForm.addEventListener("submit", e=>{
+  e.preventDefault()
+  let newComment = document.querySelector('#add-comment-input').value
+  postCommentToDB(newComment)
+  renderCommentToDom(newComment)
+  commentForm.reset();
+})
+
 
 fetchComments()
 
 
-
+///edit does not work--it will populate the form with the current comment content but when trying to submit the update, it creates a new comment rather than edits the old one. i'm not 100% sure what is happening here as I am trying to run a PATCH request -- but i think the page is mistaking the edit and create event listeners, and maybe if i added some extra logic so it knows that once i change the content, it runs the patch request it would work. i tried doing this with adding an "editsubmit" id to the "submit" button that renders once "edit" is clicked, but ran out of time in getting this to work.
 
 
 
