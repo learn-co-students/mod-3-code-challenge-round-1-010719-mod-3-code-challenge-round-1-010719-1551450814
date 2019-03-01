@@ -12,7 +12,7 @@
       crossorigin="anonymous"
     />
 
-    <script type="text/javascript" src="src/index.js"></script>
+    <!-- <script type="text/javascript" src="src/index.js"></script> -->
     <style>
       input {
         font-size: 2rem;
@@ -27,13 +27,21 @@
           <form id="comment-form">
             <label for="add-comment-input"> <h4>Create a New Comment</h4> </label>
             <input class="form-control" type="text" id="add-comment-input" />
-            <button class="btn btn-success buttons" type="submit" name="comment-button">Create comment</button>
+            <button id="createButton" class="btn btn-success buttons" type="submit" name="comment-button">Create comment</button>
+          </form>
+
+          <hr />
+
+          <form id="edit-form">
+            <label for="edit-comment-input"> <h4>Edit a Comment</h4> </label>
+            <input class="form-control" type="text" id="edit-comment-input" />
+            <button id="editButton" class="btn btn-success buttons" type="submit" name="comment-button">Edit comment</button>
           </form>
 
           <hr />
 
           <label for="filter-comments-input"> <h4>Filter Comments:</h4> </label>
-          <input class="form-control" type="text" id="filter-comments-input" />
+          <input onkeyup="filterComments()" class="form-control" type="text" id="filter-comments-input" />
 
           <h4>Your comments: <span style="color:red" id="comments-filter-term"></span></h4>
 
@@ -43,5 +51,6 @@
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="src/index.js"></script>
   </body>
 </html>
