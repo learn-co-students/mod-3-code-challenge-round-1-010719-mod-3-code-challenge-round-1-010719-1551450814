@@ -68,6 +68,7 @@ function addNewComment(e){
   newComment = myJson
   allComments.push(newComment)
   renderAllComments(allComments)
+  commentForm.refresh()
   });
 } // end of function
 
@@ -95,10 +96,12 @@ function deleteComment(e){
 
 function searchComments(e){
   let input = e.target.value
+  let lowerInput = input.toLowerCase()
   let searchedComments = []
   document.querySelector('#display-input').innerText = `Your Comments: Comments Containing ${input}`
   allComments.forEach(function(comment){
-    if (comment.content.includes(input)){
+    let = lowerComment = comment.content.toLowerCase()
+    if (lowerComment.includes(lowerInput)){
     searchedComments.push(comment)
     }
   })
